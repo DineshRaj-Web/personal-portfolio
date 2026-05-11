@@ -1,5 +1,6 @@
 const prisma = require("../config/prisma");
 const bcrypt = require("bcryptjs");
+const { sendEmail } = require("../utils/sendEmail");
 
 /**
  * POST /admin/admins
@@ -47,6 +48,32 @@ exports.createAdmin = async (req, res) => {
         createdAt: true
       }
     });
+
+    // Send welcome email to new admin
+    try {
+      await sendEmail({
+        to: email,
+        subject: "Welcome to Admin Panel - Your Account Has Been Created",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #4a90e2;">Welcome to the Admin Panel!</h2>
+            <p>Hello,</p>
+            <p>Your admin account has been successfully created.</p>
+            <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin: 20px 0;">
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Role:</strong> ${role}</p>
+              <p><strong>Password:</strong> ${password}</p>
+            </div>
+            <p>You can now login to the admin dashboard using these credentials.</p>
+            <p style="color: #666; font-size: 12px;">Please change your password after first login for security.</p>
+          </div>
+        `
+      });
+      console.log(`Welcome email sent to ${email}`);
+    } catch (emailError) {
+      console.error('Failed to send welcome email:', emailError);
+      // Continue even if email fails
+    }
 
     res.status(201).json({
       message: "Admin created successfully",

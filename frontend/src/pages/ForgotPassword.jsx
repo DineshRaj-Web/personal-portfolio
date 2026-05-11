@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import apiClient from "../services/apiClient";
 
 const ForgotPassword = () => {
   const [step, setStep] = useState(1); // 1: email, 2: otp, 3: new password
@@ -19,19 +20,7 @@ const ForgotPassword = () => {
     setMessage("");
 
     try {
-      const response = await fetch("https://personal-portfolio-backend-wgw1.onrender.com/auth/forgot-password-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to send OTP");
-      }
+      const data = await apiClient.post("/auth/forgot-password-otp", { email });
 
       setMessage(data.message);
       setOtp(["", "", "", "", "", ""]); // Clear OTP array
@@ -52,19 +41,7 @@ const ForgotPassword = () => {
     const otpValue = otp.join("");
 
     try {
-      const response = await fetch("https://personal-portfolio-backend-wgw1.onrender.com/auth/verify-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, otp: otpValue }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to verify OTP");
-      }
+      const data = await apiClient.post("/auth/verify-otp", { email, otp: otpValue });
 
       setMessage("OTP verified successfully");
       setStep(3); // Move to new password step
@@ -96,24 +73,12 @@ const ForgotPassword = () => {
     const otpValue = otp.join("");
 
     try {
-      const response = await fetch("https://personal-portfolio-backend-wgw1.onrender.com/auth/reset-password-with-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          email, 
-          otp: otpValue, 
-          newPassword, 
-          confirmPassword 
-        }),
+      const data = await apiClient.post("/auth/reset-password-with-otp", {
+        email, 
+        otp: otpValue, 
+        newPassword, 
+        confirmPassword 
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to reset password");
-      }
 
       setMessage("Password reset successfully");
       setTimeout(() => {

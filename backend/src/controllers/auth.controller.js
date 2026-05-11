@@ -293,22 +293,24 @@ exports.sendPasswordResetOTP = async (req, res) => {
       });
     }
 
-    // Send OTP email to user
-    try {
-      const emailResult = await sendOTPEmail(email, otp, admin.name || 'User');
-      
-      if (!emailResult.success) {
-        console.error('Failed to send OTP email:', emailResult.error);
-        // Still return success to user but log the error
-        // In production, you might want to implement retry logic or fallback
-      } else {
-        console.log(`OTP email sent successfully to ${email}:`, emailResult.messageId);
-      }
-    } catch (emailError) {
-      console.error('Error sending OTP email:', emailError);
-      // Continue with the flow even if email fails
-      // User can still see OTP in console for testing
-    }
+    // Send OTP email to user asynchronously
+    console.log('📧 Attempting to send OTP email to:', email);
+    console.log('📧 OTP Code:', otp);
+
+    sendOTPEmail(email, otp, admin.name || 'User')
+      .then(emailResult => {
+        console.log('📧 Email sending result:', emailResult);
+        if (!emailResult.success) {
+          console.error('❌ Failed to send OTP email:', emailResult.error);
+          console.error('❌ Error details:', emailResult.details);
+        } else {
+          console.log(`✅ OTP email sent successfully to ${email}:`, emailResult.messageId);
+        }
+      })
+      .catch(emailError => {
+        console.error('❌ Exception sending OTP email:', emailError);
+        console.error('❌ Error stack:', emailError.stack);
+      });
 
     res.json({ 
       message: "If your email exists in our system, you will receive a password reset OTP. Please check your email and follow the instructions." 

@@ -6,7 +6,7 @@
 
 import authService from "./authService";
 
-const API_URL = "https://personal-portfolio-backend-wgw1.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : "https://personal-portfolio-backend-wgw1.onrender.com");
 
 /**
  * Queue for requests waiting for token refresh

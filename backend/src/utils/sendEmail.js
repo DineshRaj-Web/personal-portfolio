@@ -29,48 +29,48 @@ const emailConfig = {
 };
 
 /**
- * Create and verify email transporter
- * @returns {Object} Nodemailer transporter instance
+ * Singleton transporter instance for connection pooling
+ * This significantly improves performance by reusing connections
  */
-const createTransporter = () => {
-  try {
-    const transporter = nodemailer.createTransport({
-      host: emailConfig.host,
-      port: emailConfig.port,
-      secure: emailConfig.secure,
-      auth: {
-        user: emailConfig.auth.user,
-        pass: emailConfig.auth.pass
-      },
-      // Add connection pooling and rate limiting
-      pool: true,
-      maxConnections: 5,
-      maxMessages: 100,
-      rateDelta: 1000,
-      rateLimit: 5
-    });
-
-    return transporter;
-  } catch (error) {
-    console.error('Failed to create email transporter:', error);
-    throw new Error('Email transporter creation failed');
-  }
-};
+let transporterInstance = null;
 
 /**
- * Verify email transporter connection
- * @param {Object} transporter - Nodemailer transporter
- * @returns {Promise<boolean>} Connection verification status
+ * Get or create email transporter (singleton pattern)
+ * @returns {Object} Nodemailer transporter instance
  */
-const verifyTransporter = async (transporter) => {
-  try {
-    await transporter.verify();
-    console.log('Email transporter verified successfully');
-    return true;
-  } catch (error) {
-    console.error('Email transporter verification failed:', error);
-    return false;
+const getTransporter = () => {
+  if (!transporterInstance) {
+    try {
+      console.log('📧 Creating new email transporter...');
+      console.log('📧 Email config:', {
+        host: emailConfig.host,
+        port: emailConfig.port,
+        secure: emailConfig.secure,
+        user: emailConfig.auth.user ? '***@***' : 'NOT_SET'
+      });
+
+      transporterInstance = nodemailer.createTransport({
+        host: emailConfig.host,
+        port: emailConfig.port,
+        secure: emailConfig.secure,
+        auth: {
+          user: emailConfig.auth.user,
+          pass: emailConfig.auth.pass
+        },
+        // Connection pooling for better performance
+        pool: true,
+        maxConnections: 10,
+        maxMessages: 200,
+        rateDelta: 1000,
+        rateLimit: 10
+      });
+      console.log('✅ Email transporter created with connection pooling');
+    } catch (error) {
+      console.error('❌ Failed to create email transporter:', error);
+      throw new Error('Email transporter creation failed');
+    }
   }
+  return transporterInstance;
 };
 
 
@@ -82,6 +82,8 @@ const verifyTransporter = async (transporter) => {
  * @returns {Promise<Object>} Email sending result
  */
 const sendOTPEmail = async (to, otp, userName = 'User') => {
+  console.log('📧 sendOTPEmail called for:', to);
+
   // Validate required fields
   if (!to || !otp) {
     throw new Error('Recipient email and OTP are required');
@@ -98,21 +100,16 @@ const sendOTPEmail = async (to, otp, userName = 'User') => {
     throw new Error('OTP must be a 6-digit number');
   }
 
-  let transporter;
-  
   try {
-    // Create transporter
-    transporter = createTransporter();
-    
-    // Verify transporter connection
-    const isVerified = await verifyTransporter(transporter);
-    if (!isVerified) {
-      throw new Error('Email transporter verification failed');
-    }
+    console.log('📧 Step 1: Getting transporter...');
+    // Get singleton transporter (reuses connection for performance)
+    const transporter = getTransporter();
 
+    console.log('📧 Step 2: Generating email content...');
     // Generate email content using React component
     const emailContent = generateOTPEmailContent(otp, userName, 'Your App');
-    
+
+    console.log('📧 Step 3: Preparing mail options...');
     // Prepare email options
     const mailOptions = {
       from: emailConfig.from,
@@ -122,11 +119,12 @@ const sendOTPEmail = async (to, otp, userName = 'User') => {
       text: emailContent.text
     };
 
+    console.log('📧 Step 4: Sending email...');
     // Send email
     const info = await transporter.sendMail(mailOptions);
-    
-    console.log(`OTP email sent successfully to ${to}:`, info.messageId);
-    
+
+    console.log(`✅ OTP email sent successfully to ${to}:`, info.messageId);
+
     return {
       success: true,
       messageId: info.messageId,
@@ -136,8 +134,10 @@ const sendOTPEmail = async (to, otp, userName = 'User') => {
     };
 
   } catch (error) {
-    console.error('Failed to send OTP email:', error);
-    
+    console.error('❌ Failed to send OTP email:', error);
+    console.error('❌ Error code:', error.code);
+    console.error('❌ Error command:', error.command);
+
     // Return detailed error information
     return {
       success: false,
@@ -149,11 +149,6 @@ const sendOTPEmail = async (to, otp, userName = 'User') => {
         command: error.command || 'UNKNOWN_COMMAND'
       }
     };
-  } finally {
-    // Close transporter connection
-    if (transporter) {
-      transporter.close();
-    }
   }
 };
 
@@ -164,51 +159,50 @@ const sendOTPEmail = async (to, otp, userName = 'User') => {
  */
 const sendEmail = async (options) => {
   const { to, subject, html, text, attachments } = options;
-  
-  if (!to || !subject) {
-    throw new Error('Recipient email and subject are required');
+
+  if (!to) {
+    throw new Error('Recipient email is required');
   }
 
-  let transporter;
-  
   try {
-    transporter = createTransporter();
-    
+    // Get singleton transporter (reuses connection for performance)
+    const transporter = getTransporter();
+
+    // Prepare email options
     const mailOptions = {
       from: emailConfig.from,
       to: to.trim(),
-      subject,
-      html,
-      text,
-      attachments
+      subject: subject || 'No Subject',
+      html: html || '',
+      text: text || '',
+      attachments: attachments || []
     };
 
+    // Send email
     const info = await transporter.sendMail(mailOptions);
-    
+
+    console.log(`Email sent successfully to ${to}:`, info.messageId);
+
     return {
       success: true,
       messageId: info.messageId,
+      recipient: to,
       timestamp: new Date().toISOString()
     };
 
   } catch (error) {
     console.error('Failed to send email:', error);
-    
+
     return {
       success: false,
       error: error.message,
+      recipient: to,
       timestamp: new Date().toISOString()
     };
-  } finally {
-    if (transporter) {
-      transporter.close();
-    }
   }
 };
 
 module.exports = {
   sendOTPEmail,
-  sendEmail,
-  createTransporter,
-  verifyTransporter
+  sendEmail
 };
