@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model ContactMessage {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  phone       String?
+  projectType String?
+  message     String
+  createdAt   DateTime @default(now())
+  isDeleted   Boolean  @default(false)
+  deletedAt   DateTime?
+}
+
+model Admin {
+  id                Int      @id @default(autoincrement())
+  name              String?
+  username          String?  @unique  // Only for SUPER_ADMIN
+  email             String   @unique
+  password          String   // Hashed password
+  role              Role     @default(ADMIN)
+  resetToken        String?  // Password reset token
+  resetTokenExpiry  DateTime? // Password reset token expiry
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
+}
+
+model PasswordResetOTP {
+  id        Int      @id @default(autoincrement())
+  email     String
+  otp       String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@unique([email])
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+}

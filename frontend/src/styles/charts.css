@@ -1,0 +1,174 @@
+/* Chart Animations */
+
+/* Line Chart Drawing Animation */
+@keyframes drawLine {
+  from {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-draw-line {
+  animation: drawLine 2s ease-out forwards;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+
+/* Pulse Animation for Chart Points */
+@keyframes pulsePoint {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+}
+
+.animate-pulse-point {
+  animation: pulsePoint 2s ease-in-out infinite;
+}
+
+/* Bar Chart Growth Animation */
+@keyframes growBar {
+  from {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+  to {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+}
+
+.animate-grow-bar {
+  animation: growBar 0.8s ease-out forwards;
+  transform-origin: bottom;
+}
+
+/* Pie Chart Growth Animation */
+@keyframes growPie {
+  from {
+    transform: scale(0) rotate(-90deg);
+    transform-origin: center;
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    transform-origin: center;
+    opacity: 1;
+  }
+}
+
+.animate-grow-pie {
+  animation: growPie 1s ease-out forwards;
+  transform-origin: center;
+}
+
+/* Donut Chart Growth Animation */
+@keyframes growDonut {
+  from {
+    transform: scale(0) rotate(-90deg);
+    transform-origin: center;
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    transform-origin: center;
+    opacity: 1;
+  }
+}
+
+.animate-grow-donut {
+  animation: growDonut 1s ease-out forwards;
+  transform-origin: center;
+}
+
+/* Progress Bar Animation */
+@keyframes progressGrow {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--progress-width);
+  }
+}
+
+.animate-progress-bar {
+  animation: progressGrow 1.5s ease-out forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Stats Card Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stats-card {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Hover Effects */
+.chart-container:hover .animate-pulse-point {
+  animation-duration: 0.5s;
+  transform: scale(1.5);
+}
+
+.chart-container:hover .animate-grow-bar {
+  filter: brightness(1.2);
+}
+
+/* Loading Animation */
+@keyframes chartLoading {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+.chart-loading {
+  animation: chartLoading 1.5s ease-in-out infinite;
+}

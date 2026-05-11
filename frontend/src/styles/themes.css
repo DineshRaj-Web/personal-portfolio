@@ -1,0 +1,254 @@
+/* Theme Variables */
+:root {
+  --bg: #000000;
+  --text: #ffffff;
+  --card: rgba(0, 0, 0, 0.8);
+  --accent: #06b6d4;
+  --section-bg: #0a0a0a;
+  --bg-primary: #000000;
+  --bg-secondary: rgba(0, 0, 0, 0.9);
+  --bg-tertiary: rgba(0, 0, 0, 0.95);
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --accent-primary: #06b6d4;
+  --accent-secondary: #a855f7;
+  --accent-tertiary: #ec4899;
+  --border-primary: rgba(6, 182, 212, 0.2);
+  --border-secondary: rgba(6, 182, 212, 0.3);
+}
+
+[data-theme="dark"] {
+  --bg: #000000;
+  --text: #ffffff;
+  --card: rgba(0, 0, 0, 0.8);
+  --accent: #06b6d4;
+  --section-bg: #0a0a0a;
+  --bg-primary: #000000;
+  --bg-secondary: rgba(0, 0, 0, 0.9);
+  --bg-tertiary: rgba(0, 0, 0, 0.95);
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --accent-primary: #06b6d4;
+  --accent-secondary: #a855f7;
+  --accent-tertiary: #ec4899;
+  --border-primary: rgba(6, 182, 212, 0.2);
+  --border-secondary: rgba(6, 182, 212, 0.3);
+}
+
+[data-theme="colorful"] {
+  --bg: #000000;
+  --text: #ffffff;
+  --card: rgba(0, 0, 0, 0.8);
+  --accent: #f472b6;
+  --section-bg: #0a0a0a;
+  --bg-primary: #000000;
+  --bg-secondary: rgba(0, 0, 0, 0.9);
+  --bg-tertiary: rgba(0, 0, 0, 0.95);
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --accent-primary: #f472b6;
+  --accent-secondary: #fb923c;
+  --accent-tertiary: #fbbf24;
+  --border-primary: rgba(244, 114, 182, 0.2);
+  --border-secondary: rgba(244, 114, 182, 0.3);
+}
+
+[data-theme="minimal"] {
+  --bg: #000000;
+  --text: #ffffff;
+  --card: rgba(0, 0, 0, 0.8);
+  --accent: #ffffff;
+  --section-bg: #0a0a0a;
+  --bg-primary: #000000;
+  --bg-secondary: rgba(0, 0, 0, 0.9);
+  --bg-tertiary: rgba(0, 0, 0, 0.95);
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --accent-primary: #ffffff;
+  --accent-secondary: #cccccc;
+  --accent-tertiary: #999999;
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --border-secondary: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="neon"] {
+  --bg: #000000;
+  --text: #39ff14;
+  --card: rgba(0, 0, 0, 0.8);
+  --accent: #39ff14;
+  --section-bg: #0a0a0a;
+  --bg-primary: #000000;
+  --bg-secondary: rgba(0, 0, 0, 0.9);
+  --bg-tertiary: rgba(0, 0, 0, 0.95);
+  --text-primary: #39ff14;
+  --text-secondary: #32cd32;
+  --text-tertiary: #228b22;
+  --accent-primary: #39ff14;
+  --accent-secondary: #00ffcc;
+  --accent-tertiary: #bc13fe;
+  --border-primary: rgba(57, 255, 20, 0.2);
+  --border-secondary: rgba(57, 255, 20, 0.3);
+}
+
+/* Global Theme Styles */
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Holographic Background Effects */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(168, 85, 247, 0.1) 25%, rgba(236, 72, 153, 0.1) 50%, rgba(34, 197, 94, 0.1) 75%, rgba(6, 182, 212, 0.1) 100%);
+  animation: holographicShift 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes holographicShift {
+  0%, 100% {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(168, 85, 247, 0.1) 25%, rgba(236, 72, 153, 0.1) 50%, rgba(34, 197, 94, 0.1) 75%, rgba(6, 182, 212, 0.1) 100%);
+  }
+  25% {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(236, 72, 153, 0.1) 25%, rgba(34, 197, 94, 0.1) 50%, rgba(6, 182, 212, 0.1) 75%, rgba(168, 85, 247, 0.1) 100%);
+  }
+  50% {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(34, 197, 94, 0.1) 25%, rgba(6, 182, 212, 0.1) 50%, rgba(168, 85, 247, 0.1) 75%, rgba(236, 72, 153, 0.1) 100%);
+  }
+  75% {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(6, 182, 212, 0.1) 25%, rgba(168, 85, 247, 0.1) 50%, rgba(236, 72, 153, 0.1) 75%, rgba(34, 197, 94, 0.1) 100%);
+  }
+}
+
+/* Mesh Grid Pattern */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes gridMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+/* Floating Particles */
+.holographic-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.holographic-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: linear-gradient(45deg, #06b6d4, #a855f7, #ec4899);
+  border-radius: 50%;
+  animation: float-up 4s ease-in-out infinite;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(100px);
+    opacity: 0;
+  }
+}
+
+.bg-secondary {
+  background: var(--bg-secondary);
+}
+
+.bg-tertiary {
+  background: var(--bg-tertiary);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-tertiary {
+  color: var(--text-tertiary);
+}
+
+.accent-primary {
+  color: var(--accent-primary);
+}
+
+.accent-secondary {
+  color: var(--accent-secondary);
+}
+
+.accent-tertiary {
+  color: var(--accent-tertiary);
+}
+
+.border-primary {
+  border-color: var(--border-primary);
+}
+
+.border-secondary {
+  border-color: var(--border-secondary);
+}
+
+/* Neon Theme Specific Effects */
+[data-theme="neon"] {
+  --neon-glow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+}
+
+[data-theme="neon"] .neon-text {
+  text-shadow: var(--neon-glow);
+}
+
+[data-theme="neon"] .neon-border {
+  box-shadow: var(--neon-glow);
+}
+
+/* Smooth transitions for theme switching */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

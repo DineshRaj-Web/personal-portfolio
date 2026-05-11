@@ -1,0 +1,203 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+  background-color: #030303;
+}
+
+/* Performance: GPU Acceleration for animated elements */
+.gpu-layer {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Performance: Content visibility for below-fold sections */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- Cyber-Chrome Primitives --- */
+
+.perspective-2000 {
+  perspective: 2000px;
+  transform-style: preserve-3d;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Cinematic Noise Texture */
+.cyber-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.15;
+  background-image: url("https://www.transparenttextures.com/patterns/concrete-wall-2.png");
+  filter: contrast(150%) brightness(100%);
+}
+
+/* Horizontal Scanning Line Overlay */
+.cyber-scanner {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+      transparent,
+      transparent 50%,
+      rgba(6, 182, 212, 0.05) 50%,
+      rgba(6, 182, 212, 0.05));
+  background-size: 100% 4px;
+}
+
+@keyframes scan-sweep {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.3), transparent);
+  animation: scan-sweep 8s linear infinite;
+  z-index: 25;
+}
+
+/* Industrial Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, rgba(6, 182, 212, 0.2), rgba(6, 182, 212, 0.5));
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.8);
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  position: relative;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 768px) {
+  .glass-panel {
+    backdrop-filter: none;
+    background: rgba(10, 10, 10, 0.98);
+    /* Removed blur for mobile performance - use solid backgrounds */
+  }
+
+  /* Mobile scroll optimizations - CRITICAL for fixing scroll jank */
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Disable complex animations on mobile */
+  .gpu-layer {
+    will-change: auto;
+    transform: none;
+  }
+
+  /* Reduce motion on mobile for battery/performance */
+  .cyber-scanner,
+  .scan-line,
+  .cyber-noise {
+    display: none !important;
+  }
+
+  /* Disable all infinite animations on mobile except critical ones */
+  .animate-pulse,
+  .animate-bounce,
+  .animate-spin {
+    animation: none !important;
+  }
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Global Interaction Primitives */
+button,
+a,
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+/* Global Button Hover Effects */
+button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  will-change: transform;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: scale(0.95);
+  filter: brightness(1.2);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+}
