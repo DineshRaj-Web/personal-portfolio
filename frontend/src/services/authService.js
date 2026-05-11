@@ -6,7 +6,7 @@
 
 import { jwtDecode } from "jwt-decode";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://personal-portfolio-backend-wgw1.onrender.com";
 
 /**
  * Store access token in localStorage

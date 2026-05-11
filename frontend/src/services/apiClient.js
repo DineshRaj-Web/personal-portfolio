@@ -6,7 +6,7 @@
 
 import authService from "./authService";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://personal-portfolio-backend-wgw1.onrender.com";
 
 /**
  * Queue for requests waiting for token refresh
