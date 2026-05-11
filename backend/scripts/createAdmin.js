@@ -3,10 +3,11 @@ const prisma = require('../src/config/prisma');
 
 async function createAdmin() {
   try {
-    const username = 'Admin';
-    const password = '12345';
+    const username = 'superadmin';
+    const password = 'NewPassword123!';
+    const email = 'superadmin@portfolio.com';
 
-    console.log('Creating admin user...');
+    console.log('Creating Super Admin user...');
     console.log('Username:', username);
 
     const saltRounds = 10;
@@ -16,15 +17,22 @@ async function createAdmin() {
 
     const admin = await prisma.admin.create({
       data: {
+        name: 'Super Admin',
         username: username,
-        password: hashedPassword
+        email: email,
+        password: hashedPassword,
+        role: 'SUPER_ADMIN'
       }
     });
 
-    console.log('\n✅ Admin user created successfully!');
+    console.log('\n✅ Super Admin created successfully!');
     console.log('Admin ID:', admin.id);
     console.log('Username:', admin.username);
-    console.log('\n⚠️  IMPORTANT: Change the default password in production!');
+    console.log('Email:', admin.email);
+    console.log('Role:', admin.role);
+    console.log('\nYou can now login with:');
+    console.log('   Username: superadmin');
+    console.log('   Password: NewPassword123!');
 
   } catch (error) {
     console.error('\n❌ Error creating admin user:');
