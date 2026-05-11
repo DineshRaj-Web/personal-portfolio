@@ -30,7 +30,7 @@ const TrashPage = () => {
       setLoading(true);
       setError(null);
       
-      const response = await fetch("http://localhost:5000/messages/trash", {
+      const response = await fetch("https://personal-portfolio-backend-wgw1.onrender.com/messages/trash", {
         headers: getAuthHeaders()
       });
       
@@ -57,7 +57,7 @@ const TrashPage = () => {
     showToast("Message restored successfully", "success");
     
     try {
-      const response = await fetch(`http://localhost:5000/messages/${id}/restore`, { 
+      const response = await fetch(`https://personal-portfolio-backend-wgw1.onrender.com/messages/${id}/restore`, { 
         method: 'PUT',
         headers: getAuthHeaders()
       });
@@ -85,7 +85,7 @@ const TrashPage = () => {
     showToast("Message permanently deleted", "success");
     
     try {
-      const response = await fetch(`http://localhost:5000/messages/${id}/permanent`, { 
+      const response = await fetch(`https://personal-portfolio-backend-wgw1.onrender.com/messages/${id}/permanent`, { 
         method: 'DELETE',
         headers: getAuthHeaders()
       });
@@ -112,7 +112,7 @@ const TrashPage = () => {
     showToast("Trash emptied", "success");
     
     try {
-      const response = await fetch("http://localhost:5000/messages/trash/empty", { 
+      const response = await fetch("https://personal-portfolio-backend-wgw1.onrender.com/messages/trash/empty", { 
         method: 'DELETE',
         headers: getAuthHeaders()
       });

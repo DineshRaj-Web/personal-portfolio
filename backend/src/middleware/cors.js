@@ -6,7 +6,7 @@
 const ALLOWED_ORIGINS = [
   "http://localhost:5173", // Vite dev server
   "http://localhost:3000", // React dev server
-  // Add production domains here
+  "https://dinesh-raj.vercel.app", // Production frontend on Vercel
 ];
 
 const cors = (req, res, next) => {

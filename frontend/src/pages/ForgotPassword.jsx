@@ -19,7 +19,7 @@ const ForgotPassword = () => {
     setMessage("");
 
     try {
-      const response = await fetch("http://localhost:5000/auth/forgot-password-otp", {
+      const response = await fetch("https://personal-portfolio-backend-wgw1.onrender.com/auth/forgot-password-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ const ForgotPassword = () => {
     const otpValue = otp.join("");
 
     try {
-      const response = await fetch("http://localhost:5000/auth/verify-otp", {
+      const response = await fetch("https://personal-portfolio-backend-wgw1.onrender.com/auth/verify-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const ForgotPassword = () => {
     const otpValue = otp.join("");
 
     try {
-      const response = await fetch("http://localhost:5000/auth/reset-password-with-otp", {
+      const response = await fetch("https://personal-portfolio-backend-wgw1.onrender.com/auth/reset-password-with-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
