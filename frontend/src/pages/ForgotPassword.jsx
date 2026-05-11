@@ -165,7 +165,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
-      <div className="w-full max-w-md sm:max-w-lg">
+      <div className="w-full max-w-md">
         <div className="bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 border border-gray-700 rounded-3xl shadow-2xl p-8">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-yellow-900/50 to-yellow-800/30 rounded-full mb-4 border border-yellow-700/30">
@@ -258,7 +258,7 @@ const ForgotPassword = () => {
                   Enter OTP Code
                 </label>
                 <p className="text-gray-400 text-sm mb-4">Check your email for the 6-digit OTP code</p>
-                <div className="flex gap-1 sm:gap-2 justify-center">
+                <div className="flex gap-2 justify-center">
                   {otp.map((digit, index) => (
                     <input
                       key={index}
@@ -270,7 +270,7 @@ const ForgotPassword = () => {
                       value={digit}
                       onChange={(e) => handleOTPChange(index, e.target.value)}
                       onKeyDown={(e) => handleOTPKeyDown(index, e)}
-                      className="w-10 h-12 sm:w-12 text-center bg-gray-800/50 border border-gray-700 rounded-xl text-white text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
+                      className="w-12 h-12 text-center bg-gray-800/50 border border-gray-700 rounded-xl text-white text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
                       required
                     />
                   ))}
